@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<h1>사원 상세정보</h1>
+
+<p>사원번호: <span th:text="${emp.empId}"></span></p>
+<p>이름: <span th:text="${emp.empName}"></span></p>
+<p>이메일: <span th:text="${emp.email}"></span></p>
+<p>부서: <span th:text="${emp.deptId}"></span></p>
+<p>직급코드: <span th:text="${emp.jobCode}"></span></p>
+<p>급여: <span th:text="${emp.salary}"></span></p>
+<p>입사일: <span th:text="${emp.hireDate}"></span></p>
+
+<a href="/emps">목록으로</a>
+
+</body>
+</html>

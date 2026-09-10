@@ -1,33 +1,63 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<!-- Day 7 : src/main/resources/mapper/EmpMapper.xml
-     namespace = 매퍼 인터페이스 FQCN, <select id> = 메서드명 -->
-<mapper namespace="com.example.hr.mapper.EmpMapper">
 
-  <!-- 공통 컬럼. ENT_YN='N'(재직) → ACTIVE=1 로 매핑 -->
-  <sql id="cols">
-    EMP_ID, EMP_NAME, EMAIL, DEPT_ID, JOB_CODE, SALARY, HIRE_DATE,
-    (CASE WHEN ENT_YN = 'N' THEN 1 ELSE 0 END) AS ACTIVE
-  </sql>
+<mapper namespace="com.biz.test.mapper.EmpMapper">
 
-  <select id="findAll" resultType="Emp">
-    SELECT <include refid="cols"/>
-    FROM EMP
-    ORDER BY EMP_ID
-  </select>
+    <insert id="insert">
+    INSERT INTO EMP (
+        EMP_ID,
+        EMP_NAME,
+        EMAIL,
+        DEPT_CODE,
+        JOB_CODE,
+        SALARY,
+        HIRE_DATE
+    )
+    VALUES (
+        #{empId},
+        #{empName},
+        #{email},
+        #{deptId},
+        #{jobCode},
+        #{salary},
+        #{hireDate}
+    )
+</insert>
 
-  <select id="findById" resultType="Emp">
-    SELECT <include refid="cols"/>
+    <select id="selectByCond"
+            parameterType="com.biz.test.dto.EmpSearchCond"
+            resultType="com.biz.test.dto.Emp">
+
+        SELECT
+            EMP_ID AS empId,
+            EMP_NAME AS empName
+        FROM EMP
+
+        <where>
+            <if test="name != null and name != ''">
+                EMP_NAME LIKE CONCAT(#{name}, '%')
+            </if>
+        </where>
+
+        ORDER BY EMP_ID
+    </select>
+
+<select id="findById"
+        resultType="com.biz.test.dto.Emp">
+
+    SELECT
+        EMP_ID AS empId,
+        EMP_NAME AS empName,
+        EMAIL AS email,
+        DEPT_CODE AS deptId,
+        JOB_CODE AS jobCode,
+        SALARY AS salary,
+        HIRE_DATE AS hireDate
     FROM EMP
     WHERE EMP_ID = #{empId}
-  </select>
 
-  <!-- LIKE 검색은 CONCAT + #{} (문자열 결합도 파라미터 바인딩으로) -->
-  <select id="findByNameLike" resultType="Emp">
-    SELECT *
-    FROM EMP
-    WHERE EMP_NAME LIKE CONCAT('%', #{keyword}, '%')
-    ORDER BY EMP_ID
-  </select>
+</select>
+
 </mapper>

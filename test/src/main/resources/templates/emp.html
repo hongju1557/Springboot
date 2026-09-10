@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<body>
+
+<form action="/emps" method="get">
+    <input type="text"
+           name="name"
+           th:value="${cond.name}"
+           placeholder="이름 검색">
+
+    <button type="submit">검색</button>
+</form>
+
+<a href="/emps/new">사원 등록</a>
+
+<h1>사원 목록</h1>
+
+<table border="1">
+    <tr>
+        <th>사원번호</th>
+        <th>이름</th>
+    </tr>
+
+    <tr th:each="emp : ${emps}">
+        <td th:text="${emp.empId}"></td>
+
+        <td>
+            <a th:href="@{/emps/{id}(id=${emp.empId})}"
+               th:text="${emp.empName}">
+            </a>
+        </td>
+    </tr>
+
+</table>
+
+</body>
+</html>
