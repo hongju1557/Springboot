@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>사원 관리 시스템</title>
+
+    <link rel="stylesheet" th:href="@{/css/basic.css}">
+    <link rel="stylesheet" th:href="@{/css/component.css}">
+    <link rel="stylesheet" th:href="@{/css/app-shell.css}">
+    <link rel="stylesheet" th:href="@{/css/hr.css}">
+</head>
+
+<body>
+
+<main class="app-main container container--wide">
+
+    <div class="page-head">
+
+        <div>
+            <h1>사원 관리 시스템</h1>
+            <p>Spring Boot + MyBatis 실습</p>
+        </div>
+
+    </div>
+
+
+    <div class="card"
+         style="padding: var(--space-6)">
+
+        <h2>사원 관리</h2>
+
+        <p class="muted mt-2">
+            사원 검색과 상세 정보를 확인할 수 있습니다.
+        </p>
+
+        <a class="btn btn--primary mt-4"
+           th:href="@{/emps}">
+            사원 목록으로
+        </a>
+
+    </div>
+
+</main>
+
+</body>
+</html>

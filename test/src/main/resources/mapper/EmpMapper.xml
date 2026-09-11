@@ -5,26 +5,28 @@
 
 <mapper namespace="com.biz.test.mapper.EmpMapper">
 
+
     <insert id="insert">
-    INSERT INTO EMP (
-        EMP_ID,
-        EMP_NAME,
-        EMAIL,
-        DEPT_CODE,
-        JOB_CODE,
-        SALARY,
-        HIRE_DATE
-    )
-    VALUES (
-        #{empId},
-        #{empName},
-        #{email},
-        #{deptId},
-        #{jobCode},
-        #{salary},
-        #{hireDate}
-    )
-</insert>
+        INSERT INTO EMP (
+            EMP_ID,
+            EMP_NAME,
+            EMAIL,
+            DEPT_CODE,
+            JOB_CODE,
+            SALARY,
+            HIRE_DATE
+        )
+        VALUES (
+            #{empId},
+            #{empName},
+            #{email},
+            #{deptId},
+            #{jobCode},
+            #{salary},
+            #{hireDate}
+        )
+    </insert>
+
 
     <select id="selectByCond"
             parameterType="com.biz.test.dto.EmpSearchCond"
@@ -32,32 +34,102 @@
 
         SELECT
             EMP_ID AS empId,
-            EMP_NAME AS empName
+            EMP_NAME AS empName,
+            EMAIL AS email,
+            DEPT_CODE AS deptId,
+            JOB_CODE AS jobCode,
+            SALARY AS salary,
+            HIRE_DATE AS hireDate
         FROM EMP
 
         <where>
-            <if test="name != null and name != ''">
-                EMP_NAME LIKE CONCAT(#{name}, '%')
+
+            <if test="keyword != null and keyword != ''">
+                AND (
+                    EMP_NAME LIKE CONCAT('%', #{keyword}, '%')
+                    OR
+                    EMAIL LIKE CONCAT('%', #{keyword}, '%')
+                )
             </if>
+
+            <if test="deptId != null and deptId != ''">
+                AND DEPT_CODE = #{deptId}
+            </if>
+
+            <if test="workingOnly">
+                AND ENT_YN = 'N'
+            </if>
+
         </where>
 
-        ORDER BY EMP_ID
+        <choose>
+
+            <when test="sort == 'name'">
+                ORDER BY EMP_NAME ASC
+            </when>
+
+            <when test="sort == 'salary'">
+                ORDER BY SALARY DESC
+            </when>
+
+            <otherwise>
+                ORDER BY HIRE_DATE DESC
+            </otherwise>
+
+        </choose>
+
+        LIMIT #{pageSize}
+        OFFSET #{offset}
+
     </select>
 
-<select id="findById"
-        resultType="com.biz.test.dto.Emp">
 
-    SELECT
-        EMP_ID AS empId,
-        EMP_NAME AS empName,
-        EMAIL AS email,
-        DEPT_CODE AS deptId,
-        JOB_CODE AS jobCode,
-        SALARY AS salary,
-        HIRE_DATE AS hireDate
-    FROM EMP
-    WHERE EMP_ID = #{empId}
+    <select id="countByCond"
+            parameterType="com.biz.test.dto.EmpSearchCond"
+            resultType="int">
 
-</select>
+        SELECT COUNT(*)
+        FROM EMP
+
+        <where>
+
+            <if test="keyword != null and keyword != ''">
+                AND (
+                    EMP_NAME LIKE CONCAT('%', #{keyword}, '%')
+                    OR
+                    EMAIL LIKE CONCAT('%', #{keyword}, '%')
+                )
+            </if>
+
+            <if test="deptId != null and deptId != ''">
+                AND DEPT_CODE = #{deptId}
+            </if>
+
+            <if test="workingOnly">
+                AND ENT_YN = 'N'
+            </if>
+
+        </where>
+
+    </select>
+
+
+    <select id="findById"
+            resultType="com.biz.test.dto.Emp">
+
+        SELECT
+            EMP_ID AS empId,
+            EMP_NAME AS empName,
+            EMAIL AS email,
+            DEPT_CODE AS deptId,
+            JOB_CODE AS jobCode,
+            SALARY AS salary,
+            HIRE_DATE AS hireDate
+        FROM EMP
+
+        WHERE EMP_ID = #{empId}
+
+    </select>
+
 
 </mapper>

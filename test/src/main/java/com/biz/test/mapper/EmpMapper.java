@@ -16,4 +16,8 @@ public interface EmpMapper{
     int insert(Emp emp);
 
     Emp findById(String empId);
+
+    int countByCond(EmpSearchCond cond);
+
+    
 }

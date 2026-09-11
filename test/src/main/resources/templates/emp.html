@@ -1,38 +1,207 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1">
+
+    <title>사원 목록</title>
+
+    <link rel="stylesheet"
+          th:href="@{/css/basic.css}">
+
+    <link rel="stylesheet"
+          th:href="@{/css/component.css}">
+
+    <link rel="stylesheet"
+          th:href="@{/css/app-shell.css}">
+
+    <link rel="stylesheet"
+          th:href="@{/css/hr.css}">
+
+</head>
+
 
 <body>
 
-<form action="/emps" method="get">
-    <input type="text"
-           name="name"
-           th:value="${cond.name}"
-           placeholder="이름 검색">
+<main class="app-main container container--wide">
 
-    <button type="submit">검색</button>
+    <form class="toolbar"
+      method="get"
+      th:action="@{/emps}"
+      th:object="${cond}">
+
+    <div class="input-group">
+
+        <input class="input"
+               type="search"
+               th:field="*{keyword}"
+               placeholder="이름 · 이메일">
+
+        <button class="btn btn--secondary"
+                type="submit">
+            검색
+        </button>
+
+    </div>
+
+
+<select class="select"
+        th:field="*{deptId}">
+
+    <option value="">
+        전체 부서
+    </option>
+
+    <option th:each="dept : ${depts}"
+            th:value="${dept.deptId}"
+            th:text="${dept.deptTitle}">
+    </option>
+
+</select>
+
+
+    <label class="switch">
+
+        <input type="checkbox"
+               th:field="*{workingOnly}">
+
+        <span class="switch__track">
+            <span class="switch__thumb"></span>
+        </span>
+
+        <span class="switch__label">
+            재직자만
+        </span>
+
+    </label>
+
+
+    <span class="spacer"></span>
+
+
+    <select class="select"
+            th:field="*{sort}">
+
+        <option value="hireDate">입사일순</option>
+        <option value="name">이름순</option>
+        <option value="salary">급여순</option>
+
+    </select>
+
+
+    <a class="btn btn--ghost btn--sm"
+       th:href="@{/emps}">
+        초기화
+    </a>
+
 </form>
 
-<a href="/emps/new">사원 등록</a>
+    <div class="page-head">
 
-<h1>사원 목록</h1>
+        <div>
+            <h1>사원 목록</h1>
+            <p>사원 정보를 검색할 수 있습니다.</p>
+        </div>
 
-<table border="1">
-    <tr>
-        <th>사원번호</th>
-        <th>이름</th>
-    </tr>
+        <a class="btn btn--primary"
+           href="/emps/new">
+            + 사원 등록
+        </a>
 
-    <tr th:each="emp : ${emps}">
-        <td th:text="${emp.empId}"></td>
+    </div>
 
-        <td>
-            <a th:href="@{/emps/{id}(id=${emp.empId})}"
-               th:text="${emp.empName}">
-            </a>
-        </td>
-    </tr>
 
-</table>
+<div class="table-wrap">
+
+    <table class="table">
+
+        <thead>
+        <tr>
+            <th>사원번호</th>
+            <th>이름</th>
+            <th>이메일</th>
+            <th>부서</th>
+            <th>직급</th>
+            <th>입사일</th>
+        </tr>
+        </thead>
+
+        <tbody>
+
+        <tr th:each="emp : ${emps}">
+            <td th:text="${emp.empId}"></td>
+
+            <td>
+                <a th:href="@{/emps/{id}(id=${emp.empId})}"
+                   th:text="${emp.empName}">
+                </a>
+            </td>
+
+            <td th:text="${emp.email}"></td>
+            <td th:text="${emp.deptId}"></td>
+            <td th:text="${emp.jobCode}"></td>
+            <td th:text="${emp.hireDate}"></td>
+        </tr>
+
+        </tbody>
+
+    </table>
+
+</div>
+
+
+
+<nav class="pagination"
+     aria-label="페이지"
+     th:if="${pageResult.totalPages > 1}">
+
+    <a class="pagination__item"
+       th:if="${pageResult.hasPrev}"
+       th:href="@{/emps(
+           keyword=${cond.keyword},
+           deptId=${cond.deptId},
+           workingOnly=${cond.workingOnly},
+           sort=${cond.sort},
+           page=${cond.page - 1}
+       )}">
+        ‹
+    </a>
+
+
+    <a class="pagination__item"
+       th:each="pageNum :
+           ${#numbers.sequence(pageResult.startPage, pageResult.endPage)}"
+       th:href="@{/emps(
+           keyword=${cond.keyword},
+           deptId=${cond.deptId},
+           workingOnly=${cond.workingOnly},
+           sort=${cond.sort},
+           page=${pageNum}
+       )}"
+       th:text="${pageNum}"
+       th:aria-current="${pageNum == cond.page} ? 'page' : null">
+    </a>
+
+
+    <a class="pagination__item"
+       th:if="${pageResult.hasNext}"
+       th:href="@{/emps(
+           keyword=${cond.keyword},
+           deptId=${cond.deptId},
+           workingOnly=${cond.workingOnly},
+           sort=${cond.sort},
+           page=${cond.page + 1}
+       )}">
+        ›
+    </a>
+
+</nav>
+
+</main>
 
 </body>
 </html>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.biz.test.mapper.DeptMapper">
+
+    <select id="findAll"
+            resultType="com.biz.test.dto.Dept">
+
+        SELECT
+            DEPT_ID AS deptId,
+            DEPT_TITLE AS deptTitle
+        FROM DEPT
+        ORDER BY DEPT_ID
+
+    </select>
+
+</mapper>

@@ -2,7 +2,10 @@ package com.biz.test.controller;
 
 import java.util.List;
 import com.biz.test.dto.*;
+import com.biz.test.mapper.DeptMapper;
 import com.biz.test.mapper.EmpMapper;
+import com.biz.test.mapper.DeptMapper;
+
 import org.springframework.web.bind.annotation.PostMapping;
 
 import org.springframework.stereotype.Controller;
@@ -17,21 +20,38 @@ import java.util.ArrayList;
 public class EmpController {
 
     private final EmpMapper empMapper;
+    private final DeptMapper deptMapper;
 
-    public EmpController(EmpMapper empMapper){
-        this.empMapper = empMapper;
+    public EmpController(EmpMapper empMapper,
+                     DeptMapper deptMapper) {
+
+    this.empMapper = empMapper;
+    this.deptMapper = deptMapper;
     }
-    
-    @GetMapping("/emps")
-    public String emps(EmpSearchCond cond, Model model){
+@GetMapping("/emps")
+public String emps(EmpSearchCond cond, Model model) {
 
-        List<Emp> list = empMapper.selectByCond(cond);
+    List<Emp> list = empMapper.selectByCond(cond);
 
-        model.addAttribute("emps",list);
-        model.addAttribute("cond", cond);
+    int totalCount = empMapper.countByCond(cond);
 
-        return "emp";
-    }
+    PageResult<Emp> pageResult =
+            new PageResult<>(
+                    list,
+                    totalCount,
+                    cond.getPage(),
+                    cond.getPageSize()
+            );
+
+    List<Dept> depts = deptMapper.findAll();
+
+    model.addAttribute("emps", list);
+    model.addAttribute("cond", cond);
+    model.addAttribute("pageResult", pageResult);
+    model.addAttribute("depts", depts);
+
+    return "emp";
+}
 
     @GetMapping("/emps/{empId}")
     public String detail(@PathVariable("empId") String empId, Model model ) {
