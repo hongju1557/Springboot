@@ -7,11 +7,11 @@ public class PageResult<T> {
     private static final int PAGE_WINDOW = 5;
 
     private final List<T> content;
-    private final int totalElements;
+    private final long totalElements;
     private final int page;
     private final int pageSize;
 
-    public PageResult(List<T> content, int totalElements, int page, int pageSize) {
+    public PageResult(List<T> content, long totalElements, int page, int pageSize) {
         this.content = content;
         this.totalElements = totalElements;
         this.page = page;
@@ -22,7 +22,7 @@ public class PageResult<T> {
         return content;
     }
 
-    public int getTotalElements() {
+    public long getTotalElements() {
         return totalElements;
     }
 
@@ -35,8 +35,10 @@ public class PageResult<T> {
     }
 
     public int getTotalPages() {
-        return Math.max(1,
-                (int) Math.ceil((double) totalElements / pageSize));
+        return Math.max(
+                1,
+                (int) Math.ceil((double) totalElements / pageSize)
+        );
     }
 
     public boolean isHasPrev() {

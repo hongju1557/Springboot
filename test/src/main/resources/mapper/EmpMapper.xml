@@ -5,13 +5,37 @@
 
 <mapper namespace="com.biz.test.mapper.EmpMapper">
 
+    <sql id="searchWhere">
+
+        <where>
+
+            <if test="keyword != null and keyword != ''">
+                AND (
+                    e.EMP_NAME LIKE CONCAT('%', #{keyword}, '%')
+                    OR
+                    e.EMAIL LIKE CONCAT('%', #{keyword}, '%')
+                )
+            </if>
+
+            <if test="deptId != null and deptId != ''">
+                AND e.DEPT_ID = #{deptId}
+            </if>
+
+            <if test="activeOnly">
+                AND e.ENT_YN = 'N'
+            </if>
+
+        </where>
+
+    </sql>
+
 
     <insert id="insert">
-        INSERT INTO EMP (
+        INSERT INTO emp (
             EMP_ID,
             EMP_NAME,
             EMAIL,
-            DEPT_CODE,
+            DEPT_ID,
             JOB_CODE,
             SALARY,
             HIRE_DATE
@@ -28,88 +52,40 @@
     </insert>
 
 
-    <select id="selectByCond"
+    <select id="findPage"
             parameterType="com.biz.test.dto.EmpSearchCond"
             resultType="com.biz.test.dto.Emp">
 
         SELECT
-            EMP_ID AS empId,
-            EMP_NAME AS empName,
-            EMAIL AS email,
-            DEPT_CODE AS deptId,
-            JOB_CODE AS jobCode,
-            SALARY AS salary,
-            HIRE_DATE AS hireDate
-        FROM EMP
+            e.EMP_ID AS empId,
+            e.EMP_NAME AS empName,
+            e.EMAIL AS email,
+            e.DEPT_ID AS deptId,
+            e.JOB_CODE AS jobCode,
+            e.SALARY AS salary,
+            e.HIRE_DATE AS hireDate
 
-        <where>
+        FROM emp e
 
-            <if test="keyword != null and keyword != ''">
-                AND (
-                    EMP_NAME LIKE CONCAT('%', #{keyword}, '%')
-                    OR
-                    EMAIL LIKE CONCAT('%', #{keyword}, '%')
-                )
-            </if>
+        <include refid="searchWhere"/>
 
-            <if test="deptId != null and deptId != ''">
-                AND DEPT_CODE = #{deptId}
-            </if>
+        ORDER BY ${sort.column} ${sort.direction}
 
-            <if test="workingOnly">
-                AND ENT_YN = 'N'
-            </if>
-
-        </where>
-
-        <choose>
-
-            <when test="sort == 'name'">
-                ORDER BY EMP_NAME ASC
-            </when>
-
-            <when test="sort == 'salary'">
-                ORDER BY SALARY DESC
-            </when>
-
-            <otherwise>
-                ORDER BY HIRE_DATE DESC
-            </otherwise>
-
-        </choose>
-
-        LIMIT #{pageSize}
+        LIMIT #{size}
         OFFSET #{offset}
 
     </select>
 
 
-    <select id="countByCond"
+    <select id="countPage"
             parameterType="com.biz.test.dto.EmpSearchCond"
-            resultType="int">
+            resultType="long">
 
         SELECT COUNT(*)
-        FROM EMP
 
-        <where>
+        FROM emp e
 
-            <if test="keyword != null and keyword != ''">
-                AND (
-                    EMP_NAME LIKE CONCAT('%', #{keyword}, '%')
-                    OR
-                    EMAIL LIKE CONCAT('%', #{keyword}, '%')
-                )
-            </if>
-
-            <if test="deptId != null and deptId != ''">
-                AND DEPT_CODE = #{deptId}
-            </if>
-
-            <if test="workingOnly">
-                AND ENT_YN = 'N'
-            </if>
-
-        </where>
+        <include refid="searchWhere"/>
 
     </select>
 
@@ -121,13 +97,41 @@
             EMP_ID AS empId,
             EMP_NAME AS empName,
             EMAIL AS email,
-            DEPT_CODE AS deptId,
+            DEPT_ID AS deptId,
             JOB_CODE AS jobCode,
             SALARY AS salary,
             HIRE_DATE AS hireDate
-        FROM EMP
+
+        FROM emp
 
         WHERE EMP_ID = #{empId}
+
+    </select>
+
+
+    <select id="findByIds"
+            resultType="com.biz.test.dto.Emp">
+
+        SELECT
+            EMP_ID AS empId,
+            EMP_NAME AS empName,
+            EMAIL AS email,
+            DEPT_ID AS deptId,
+            JOB_CODE AS jobCode,
+            SALARY AS salary,
+            HIRE_DATE AS hireDate
+
+        FROM emp
+
+        WHERE EMP_ID IN
+
+        <foreach collection="ids"
+                 item="id"
+                 open="("
+                 separator=","
+                 close=")">
+            #{id}
+        </foreach>
 
     </select>
 

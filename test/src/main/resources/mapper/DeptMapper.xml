@@ -11,7 +11,7 @@
         SELECT
             DEPT_ID AS deptId,
             DEPT_TITLE AS deptTitle
-        FROM DEPT
+        FROM dept
         ORDER BY DEPT_ID
 
     </select>

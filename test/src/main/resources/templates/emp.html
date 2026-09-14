@@ -67,7 +67,7 @@
     <label class="switch">
 
         <input type="checkbox"
-               th:field="*{workingOnly}">
+               th:field="*{activeOnly}">
 
         <span class="switch__track">
             <span class="switch__thumb"></span>
@@ -86,9 +86,9 @@
     <select class="select"
             th:field="*{sort}">
 
-        <option value="hireDate">입사일순</option>
-        <option value="name">이름순</option>
-        <option value="salary">급여순</option>
+        <option value="HIRE_DATE">입사일순</option>
+        <option value="NAME">이름순</option>
+        <option value="SALARY">급여순</option>
 
     </select>
 
@@ -108,7 +108,7 @@
         </div>
 
         <a class="btn btn--primary"
-           href="/emps/new">
+        th:href="@{/emps/new}">
             + 사원 등록
         </a>
 
@@ -164,7 +164,7 @@
        th:href="@{/emps(
            keyword=${cond.keyword},
            deptId=${cond.deptId},
-           workingOnly=${cond.workingOnly},
+           activeOnly=${cond.activeOnly},
            sort=${cond.sort},
            page=${cond.page - 1}
        )}">
@@ -178,7 +178,7 @@
        th:href="@{/emps(
            keyword=${cond.keyword},
            deptId=${cond.deptId},
-           workingOnly=${cond.workingOnly},
+           activeOnly=${cond.activeOnly},
            sort=${cond.sort},
            page=${pageNum}
        )}"
@@ -192,7 +192,7 @@
        th:href="@{/emps(
            keyword=${cond.keyword},
            deptId=${cond.deptId},
-           workingOnly=${cond.workingOnly},
+           activeOnly=${cond.activeOnly},
            sort=${cond.sort},
            page=${cond.page + 1}
        )}">

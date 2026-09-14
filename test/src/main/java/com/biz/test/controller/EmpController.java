@@ -4,7 +4,6 @@ import java.util.List;
 import com.biz.test.dto.*;
 import com.biz.test.mapper.DeptMapper;
 import com.biz.test.mapper.EmpMapper;
-import com.biz.test.mapper.DeptMapper;
 
 import org.springframework.web.bind.annotation.PostMapping;
 
@@ -31,16 +30,16 @@ public class EmpController {
 @GetMapping("/emps")
 public String emps(EmpSearchCond cond, Model model) {
 
-    List<Emp> list = empMapper.selectByCond(cond);
+    List<Emp> list = empMapper.findPage(cond);
 
-    int totalCount = empMapper.countByCond(cond);
+    long totalCount = empMapper.countPage(cond);
 
     PageResult<Emp> pageResult =
             new PageResult<>(
                     list,
                     totalCount,
                     cond.getPage(),
-                    cond.getPageSize()
+                    cond.getSize()
             );
 
     List<Dept> depts = deptMapper.findAll();
