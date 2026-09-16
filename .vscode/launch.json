@@ -2,13 +2,28 @@
     "configurations": [
         {
             "type": "java",
+            "name": "PasswordTest",
+            "request": "launch",
+            "mainClass": "com.biz.test.PasswordTest",
+            "projectName": "test"
+        },
+        {
+            "type": "java",
+            "name": "PasswordTest",
+            "request": "launch",
+            "mainClass": "com.biz.test.controller.PasswordTest",
+            "projectName": "test"
+        },
+        {
+            "type": "java",
             "name": "Spring Boot-TestApplication<test>",
             "request": "launch",
             "cwd": "${workspaceFolder}",
             "mainClass": "com.biz.test.TestApplication",
             "projectName": "test",
             "args": "",
-            "envFile": "${workspaceFolder}/.env"
+            "envFile": "${workspaceFolder}/.env",
+            "vmArgs": " -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=50427 -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Dspring.jmx.enabled=true -Djava.rmi.server.hostname=localhost -Dspring.application.admin.enabled=true -Dspring.boot.project.name=test"
         }
     ]
 }
