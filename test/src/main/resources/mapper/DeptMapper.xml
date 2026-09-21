@@ -16,4 +16,30 @@
 
     </select>
 
+    <!-- 해당 부서에 소속된 사원 수 -->
+    <select id="countEmployees" resultType="int">
+        SELECT COUNT(*)
+        FROM emp
+        WHERE DEPT_ID = #{deptId}
+    </select>
+
+    <!-- 부서 삭제 -->
+    <delete id="delete">
+        DELETE FROM dept
+        WHERE DEPT_ID = #{deptId}
+    </delete>
+
+    <insert id="save" parameterType="com.biz.test.dto.Dept">
+        INSERT INTO dept (
+            DEPT_ID,
+            DEPT_TITLE,
+            LOCATION_ID
+        )
+        VALUES (
+            #{deptId},
+            #{deptTitle},
+            #{locationId}
+        )
+    </insert>
+
 </mapper>

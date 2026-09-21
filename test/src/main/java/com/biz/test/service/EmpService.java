@@ -11,4 +11,6 @@ public interface EmpService {
     Emp findById(String empId);
 
     void insert(Emp emp);
+
+    void update(Emp emp);
 }

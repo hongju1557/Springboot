@@ -134,6 +134,11 @@
         </foreach>
 
     </select>
-
+    <update id="update" parameterType="com.biz.test.dto.Emp">
+    UPDATE emp
+    SET EMP_NAME = #{empName},
+        EMAIL = #{email}
+    WHERE EMP_ID = #{empId}
+    </update>
 
 </mapper>

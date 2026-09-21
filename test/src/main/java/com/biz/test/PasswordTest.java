@@ -12,5 +12,7 @@ public class PasswordTest {
         System.out.println(
                 encoder.encode("1234")
         );
+
+        System.out.println(encoder.encode("1234"));
     }
 }

@@ -45,4 +45,9 @@ public class EmpServiceImpl implements EmpService {
     public void insert(Emp emp) {
         empMapper.insert(emp);
     }
+
+    @Override
+    public void update(Emp emp) {
+        empMapper.update(emp);
+    }
 }

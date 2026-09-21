@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1">
+
+    <title>부서 관리</title>
+
+    <link rel="stylesheet" th:href="@{/css/basic.css}">
+    <link rel="stylesheet" th:href="@{/css/component.css}">
+    <link rel="stylesheet" th:href="@{/css/app-shell.css}">
+    <link rel="stylesheet" th:href="@{/css/hr.css}">
+</head>
+<body>
+
+<main class="app-main container">
+
+    <div class="page-head">
+        <h1>부서 관리</h1>
+
+        <a class="btn btn--secondary" th:href="@{/}">
+            홈으로
+        </a>
+    </div>
+
+    <!-- 등록·삭제 성공 메시지 -->
+    <p th:if="${msg != null}"
+       th:text="${msg}"
+       role="status"
+       style="color: green;"></p>
+
+    <!-- 오류 메시지 -->
+    <p th:if="${error != null}"
+       th:text="${error}"
+       role="alert"
+       style="color: red;"></p>
+
+    <!-- 부서 등록 -->
+    <section class="card" style="padding: 24px;">
+        <h2>부서 등록</h2>
+
+        <form th:action="@{/depts}" method="post">
+
+            <p>
+                <label for="deptId">부서 코드</label>
+                <input class="input"
+                       id="deptId"
+                       name="deptId"
+                       type="text"
+                       maxlength="2"
+                       required>
+            </p>
+
+            <p>
+                <label for="deptTitle">부서명</label>
+                <input class="input"
+                       id="deptTitle"
+                       name="deptTitle"
+                       type="text"
+                       maxlength="35"
+                       required>
+            </p>
+
+            <p>
+                <label for="locationId">위치 코드</label>
+                <input class="input"
+                       id="locationId"
+                       name="locationId"
+                       type="text"
+                       maxlength="2"
+                       required>
+            </p>
+
+            <button class="btn btn--primary" type="submit">
+                등록
+            </button>
+
+        </form>
+    </section>
+
+    <!-- 부서 목록 -->
+    <section class="mt-6">
+        <h2>부서 목록</h2>
+
+        <table class="table">
+            <thead>
+            <tr>
+                <th>부서 코드</th>
+                <th>부서명</th>
+                <th>관리</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            <tr th:each="dept : ${depts}">
+                <td th:text="${dept.deptId}"></td>
+                <td th:text="${dept.deptTitle}"></td>
+
+                <td>
+                    <form
+                        th:action="@{/depts/{id}/delete(id=${dept.deptId})}"
+                        method="post"
+                        onsubmit="return confirm('이 부서를 삭제하시겠습니까?');">
+
+                        <button class="btn btn--secondary"
+                                type="submit">
+                            삭제
+                        </button>
+
+                    </form>
+                </td>
+            </tr>
+
+            <tr th:if="${#lists.isEmpty(depts)}">
+                <td colspan="3">등록된 부서가 없습니다.</td>
+            </tr>
+            </tbody>
+        </table>
+    </section>
+
+</main>
+
+</body>
+</html>

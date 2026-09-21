@@ -10,10 +10,10 @@
             resultType="com.biz.test.domain.Member">
 
         SELECT
-            MEMBER_ID,
-            PASSWORD,
-            MEMBER_NAME,
-            ROLE
+            MEMBER_ID AS memberId,
+            PASSWORD AS password,
+            MEMBER_NAME AS memberName,
+            ROLE AS role
         FROM MEMBER
         WHERE MEMBER_ID = #{memberId}
 

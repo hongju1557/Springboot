@@ -5,6 +5,16 @@ public class Dept {
     private String deptId;
     private String deptTitle;
 
+    private String locationId;
+
+    public String getLocationId() {
+        return locationId;
+    }
+
+    public void setLocationId(String locationId) {
+        this.locationId = locationId;
+    }
+
     public String getDeptId() {
         return deptId;
     }

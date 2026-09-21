@@ -25,4 +25,6 @@ public interface EmpMapper {
 
     // 여러 사원번호로 한꺼번에 조회
     List<Emp> findByIds(@Param("ids") List<String> ids);
+
+    int update(Emp emp);
 }

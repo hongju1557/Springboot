@@ -10,4 +10,10 @@ import com.biz.test.dto.Dept;
 public interface DeptMapper {
 
     List<Dept> findAll();
+
+    int save(Dept dept);
+
+    int countEmployees(String deptId);
+
+    int delete(String deptId);
 }
