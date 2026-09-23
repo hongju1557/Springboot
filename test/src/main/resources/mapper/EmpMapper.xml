@@ -52,31 +52,6 @@
     </insert>
 
 
-    <select id="findPage"
-            parameterType="com.biz.test.dto.EmpSearchCond"
-            resultType="com.biz.test.dto.Emp">
-
-        SELECT
-            e.EMP_ID AS empId,
-            e.EMP_NAME AS empName,
-            e.EMAIL AS email,
-            e.DEPT_ID AS deptId,
-            e.JOB_CODE AS jobCode,
-            e.SALARY AS salary,
-            e.HIRE_DATE AS hireDate
-
-        FROM emp e
-
-        <include refid="searchWhere"/>
-
-        ORDER BY ${sort.column} ${sort.direction}
-
-        LIMIT #{size}
-        OFFSET #{offset}
-
-    </select>
-
-
     <select id="countPage"
             parameterType="com.biz.test.dto.EmpSearchCond"
             resultType="long">
@@ -100,40 +75,38 @@
             DEPT_ID AS deptId,
             JOB_CODE AS jobCode,
             SALARY AS salary,
-            HIRE_DATE AS hireDate
-
+            HIRE_DATE AS hireDate,
+            PHONE AS phone,
+            ENT_YN AS entYn
         FROM emp
-
         WHERE EMP_ID = #{empId}
-
     </select>
 
 
-    <select id="findByIds"
-            resultType="com.biz.test.dto.Emp">
+    <select id="findPage"
+        parameterType="com.biz.test.dto.EmpSearchCond"
+        resultType="com.biz.test.dto.Emp">
 
-        SELECT
-            EMP_ID AS empId,
-            EMP_NAME AS empName,
-            EMAIL AS email,
-            DEPT_ID AS deptId,
-            JOB_CODE AS jobCode,
-            SALARY AS salary,
-            HIRE_DATE AS hireDate
+    SELECT
+        e.EMP_ID AS empId,
+        e.EMP_NAME AS empName,
+        e.EMAIL AS email,
+        e.DEPT_ID AS deptId,
+        e.JOB_CODE AS jobCode,
+        e.SALARY AS salary,
+        e.HIRE_DATE AS hireDate,
+        e.PHONE AS phone,
+        e.ENT_YN AS entYn
+    FROM emp e
 
-        FROM emp
+    <include refid="searchWhere"/>
 
-        WHERE EMP_ID IN
+    ORDER BY ${sort.column} ${sort.direction}
 
-        <foreach collection="ids"
-                 item="id"
-                 open="("
-                 separator=","
-                 close=")">
-            #{id}
-        </foreach>
-
+    LIMIT #{size}
+    OFFSET #{offset}
     </select>
+
     <update id="update" parameterType="com.biz.test.dto.Emp">
     UPDATE emp
     SET EMP_NAME = #{empName},

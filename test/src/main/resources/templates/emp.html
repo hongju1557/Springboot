@@ -66,8 +66,9 @@
 
     <label class="switch">
 
-        <input type="checkbox"
-               th:field="*{activeOnly}">
+    <input type="checkbox"
+       th:field="*{activeOnly}"
+       onchange="this.form.requestSubmit()">
 
         <span class="switch__track">
             <span class="switch__thumb"></span>
@@ -127,24 +128,46 @@
             <th>부서</th>
             <th>직급</th>
             <th>입사일</th>
+            <th>상태</th>
         </tr>
         </thead>
 
         <tbody>
 
         <tr th:each="emp : ${emps}">
-            <td th:text="${emp.empId}"></td>
+        <td th:text="${emp.empId}"></td>
 
-            <td>
-                <a th:href="@{/emps/{id}(id=${emp.empId})}"
-                   th:text="${emp.empName}">
-                </a>
+        <td>
+        <a th:href="@{/emps/{id}(id=${emp.empId})}"
+           th:text="${emp.empName}">
+        </a>
+        </td>
+
+        <td th:text="${emp.email}"></td>
+        <td th:text="${emp.deptId}"></td>
+        <td th:text="${emp.jobCode}"></td>
+        <td th:text="${emp.hireDate}"></td>
+
+    <!-- 상태는 입사일 다음, 마지막 열에 배치 -->
+        <td>
+        <span th:if="${emp.active}"
+              class="badge badge--success">
+            재직
+        </span>
+
+        <span th:if="${emp.entYn != null
+                and #strings.equalsIgnoreCase(emp.entYn, 'Y')}"
+              class="badge badge--danger">
+            퇴사
+        </span>
+
+        <span th:if="${emp.entYn == null
+                or (!#strings.equalsIgnoreCase(emp.entYn, 'N')
+                and !#strings.equalsIgnoreCase(emp.entYn, 'Y'))}"
+              class="badge">
+            미확인
+        </span>
             </td>
-
-            <td th:text="${emp.email}"></td>
-            <td th:text="${emp.deptId}"></td>
-            <td th:text="${emp.jobCode}"></td>
-            <td th:text="${emp.hireDate}"></td>
         </tr>
 
         </tbody>

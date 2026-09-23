@@ -1,4 +1,9 @@
+// 2. src/main/java/com/biz/test/domain/Member.java
+// 기존 파일 교체
+
 package com.biz.test.domain;
+
+import java.time.LocalDateTime;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -15,4 +20,8 @@ public class Member {
     private String password;
     private String memberName;
     private String role;
+
+    private int loginFailCount;
+    private int isLocked;
+    private LocalDateTime lastLoginAt;
 }

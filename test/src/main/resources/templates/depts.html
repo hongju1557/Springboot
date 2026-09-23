@@ -88,6 +88,9 @@
             <tr>
                 <th>부서 코드</th>
                 <th>부서명</th>
+                <th>국가명</th>
+                <th>사원 수</th>
+                <th>평균 급여</th>
                 <th>관리</th>
             </tr>
             </thead>
@@ -97,23 +100,30 @@
                 <td th:text="${dept.deptId}"></td>
                 <td th:text="${dept.deptTitle}"></td>
 
+                <td th:text="${dept.nationalName != null
+                        ? dept.nationalName : '-'}"></td>
+
+                <td th:text="|${dept.cnt}명|"></td>
+
+                <td th:text="${dept.cnt == 0
+                        ? '-'
+                        : #numbers.formatDecimal(dept.avg, 1, 'COMMA', 0, 'POINT') + '원'}">
+                </td>
+
                 <td>
-                    <form
-                        th:action="@{/depts/{id}/delete(id=${dept.deptId})}"
+                    <form th:action="@{/depts/{id}/delete(id=${dept.deptId})}"
                         method="post"
                         onsubmit="return confirm('이 부서를 삭제하시겠습니까?');">
 
-                        <button class="btn btn--secondary"
-                                type="submit">
+                        <button class="btn btn--secondary" type="submit">
                             삭제
                         </button>
-
                     </form>
                 </td>
             </tr>
 
             <tr th:if="${#lists.isEmpty(depts)}">
-                <td colspan="3">등록된 부서가 없습니다.</td>
+                <td colspan="6">등록된 부서가 없습니다.</td>
             </tr>
             </tbody>
         </table>

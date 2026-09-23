@@ -190,9 +190,9 @@
   box-shadow: var(--shadow-sm);
   transition: transform var(--duration) var(--ease-out);
 }
-.switch input:checked + .switch__track { background: var(--color-success); }
-.switch input:checked + .switch__track .switch__thumb { transform: translateX(1.3em); }
-.switch input:focus-visible + .switch__track { outline: 3px solid var(--color-accent); outline-offset: 2px; }
+.switch input:checked ~ .switch__track { background: var(--color-success); }
+.switch input:checked ~ .switch__track .switch__thumb { transform: translateX(1.3em); }
+.switch input:focus-visible ~ .switch__track { outline: 3px solid var(--color-accent); outline-offset: 2px; }
 .switch__label { font-size: var(--text-base); }
 
 /* =============================================================================

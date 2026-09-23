@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-
+<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
@@ -8,15 +7,37 @@
 
     <select id="findById"
             resultType="com.biz.test.domain.Member">
-
         SELECT
             MEMBER_ID AS memberId,
             PASSWORD AS password,
             MEMBER_NAME AS memberName,
-            ROLE AS role
+            ROLE AS role,
+            LOGIN_FAIL_COUNT AS loginFailCount,
+            IS_LOCKED AS isLocked,
+            LAST_LOGIN_AT AS lastLoginAt
         FROM MEMBER
         WHERE MEMBER_ID = #{memberId}
-
     </select>
+
+    <update id="updateFailCount">
+        UPDATE MEMBER
+        SET
+            IS_LOCKED = CASE
+                WHEN LOGIN_FAIL_COUNT + 1 >= 5 THEN 1
+                ELSE IS_LOCKED
+            END,
+            LOGIN_FAIL_COUNT = LOGIN_FAIL_COUNT + 1
+        WHERE MEMBER_ID = #{memberId}
+          AND IS_LOCKED = 0
+    </update>
+
+    <update id="resetFailCount">
+        UPDATE MEMBER
+        SET
+            LOGIN_FAIL_COUNT = 0,
+            LAST_LOGIN_AT = NOW()
+        WHERE MEMBER_ID = #{memberId}
+          AND IS_LOCKED = 0
+    </update>
 
 </mapper>

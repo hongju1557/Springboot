@@ -5,15 +5,27 @@
 
 <mapper namespace="com.biz.test.mapper.DeptMapper">
 
-    <select id="findAll"
-            resultType="com.biz.test.dto.Dept">
-
-        SELECT
-            DEPT_ID AS deptId,
-            DEPT_TITLE AS deptTitle
-        FROM dept
-        ORDER BY DEPT_ID
-
+    <select id="findAll" resultType="com.biz.test.dto.Dept">
+    SELECT
+        D.DEPT_ID AS deptId,
+        D.DEPT_TITLE AS deptTitle,
+        D.LOCATION_ID AS locationId,
+        N.NATIONAL_NAME AS nationalName,
+        COUNT(E.EMP_ID) AS cnt,
+        COALESCE(AVG(E.SALARY), 0) AS avg
+    FROM dept D
+    LEFT JOIN location L
+        ON D.LOCATION_ID = L.LOCAL_CODE
+    LEFT JOIN national N
+        ON L.NATIONAL_CODE = N.NATIONAL_CODE
+    LEFT JOIN emp E
+        ON D.DEPT_ID = E.DEPT_ID
+    GROUP BY
+        D.DEPT_ID,
+        D.DEPT_TITLE,
+        D.LOCATION_ID,
+        N.NATIONAL_NAME
+    ORDER BY D.DEPT_ID
     </select>
 
     <!-- 해당 부서에 소속된 사원 수 -->

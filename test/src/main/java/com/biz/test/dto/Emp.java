@@ -12,4 +12,11 @@ public class Emp {
     private String jobCode;
     private Integer salary;
     private String hireDate;
+
+    private String phone;
+    private String entYn;
+
+    public boolean isActive() {
+        return "N".equalsIgnoreCase(entYn);
+    }
 }
